@@ -43,19 +43,19 @@ math_md_to_pdf.main()
 
 + Pandoc 1.12 for Markdown rendering. v1.12 required for YAML headers.
 
-+ R with the Knitr and RMarkdown if you want to execute code. This is controlled by an optional argument.
++ R with Knitr and RMarkdown if you want to execute code. This is controlled by an optional argument.
 
 + Currently uses `nohup` and `xdg-open` to open PDF's after rendering. This is also controlled by an optional argument.
 
 ## Background
 
-RStudio supports most of these features by default through RMarkdown and Knitr. RStudio's default implementation of Pandoc was ultra-powerful, so I ended up using it to write two programming books.
+RStudio supports most of these features by default through RMarkdown and Knitr. RStudio's default implementation of Pandoc was ultra-powerful, and I ended up using it to write two programming books.
 
 I realized I needed a few more things from it:
 
 + I don't always want to evaluate the code. My second book had `{python, eval=False}` in every single chunk header because it used an isolated Python environment that couldn't be executed from Knitr.
 
-+ I want filepaths to figures/pictures/images to be relative to the Markdown document, not the working directory from which the PDF is generated. This does wonders for portability and organization. (I made my technical reviewers download RStudio to edit my books, just to overcome this issue.)
++ I wanted filepaths to figures/pictures/images to be relative to the Markdown document, not the working directory from which the PDF is generated. This does wonders for portability and organization. (I made my technical reviewers download RStudio to edit my books, just to overcome this issue.)
 
 + I wanted to use other IDE's to write books and documentation. When writing, you really only use the top left window of RStudio.
 
