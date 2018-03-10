@@ -48,6 +48,11 @@ def main():
 		)
 
 	parser.add_argument(
+		'-s', '--show_pdf', action='store_true',
+		help="Show the PDF after rendering. Uses xdg-open."
+		)
+
+	parser.add_argument(
 		'-v', '--verbose', action='store_true',
 		help="Display verbose output messages.")
 
@@ -133,16 +138,16 @@ def main():
 		print(tex_proc.stdout, end='')
 		print(tex_proc.stderr, end='')
 
+	if args.show_pdf:
+		# Open the PDF with nohupped XDG
+		xdg_proc = subprocess.run(['nohup', 'xdg-open', 
+			os.path.join(md_dir, md_filename + '.pdf')],
+			stdout=subprocess.PIPE,
+			stderr=subprocess.PIPE,
+			universal_newlines=True)
 
-	# Open the PDF with nohupped XDG
-	xdg_proc = subprocess.run(['nohup', 'xdg-open', 
-		os.path.join(md_dir, md_filename + '.pdf')],
-		stdout=subprocess.PIPE,
-		stderr=subprocess.PIPE,
-		universal_newlines=True)
-
-	# print(xdg_proc.stdout, end='')
-	# print(xdg_proc.stderr, end='')
+		# print(xdg_proc.stdout, end='')
+		# print(xdg_proc.stderr, end='')
 
 if __name__ == '__main__':
 	main()

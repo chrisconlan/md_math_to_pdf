@@ -14,6 +14,39 @@ This is the last Markdown variant you will ever need. Features include:
 
 + Uses Python 3's `subprocess.run()` for Bash safety.
 
+## Usage
+
+```
+# As Python file
+python3 main.py /path/to/markdown_doc.md
+
+# As module
+python3 -m math_md_to_pdf /path/to/markdown_doc.md
+
+# Help output
+python3 main.py --help
+```
+
+### Shebang and Symlink
+
+Dump this in a script outside the project directory and symlink it to call from anywhere.
+
+```
+#!/usr/bin/python3 
+import math_md_to_pdf
+math_md_to_pdf.main()
+```
+
+## Dependencies
+
++ Python 3.5 or later for `subprocess.run()` and `print` functions.
+
++ Pandoc 1.12 for Markdown rendering. v1.12 required for YAML headers.
+
++ R with the Knitr and RMarkdown if you want to execute code. This is controlled by an optional argument.
+
++ Currently uses `nohup` and `xdg-open` to open PDF's after rendering. This is also controlled by an optional argument.
+
 ## Background
 
 RStudio supports most of these features by default through RMarkdown and Knitr. RStudio's default implementation of Pandoc was ultra-powerful, so I ended up using it to write two programming books.
