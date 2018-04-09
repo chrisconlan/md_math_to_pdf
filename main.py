@@ -48,8 +48,13 @@ def main():
 		)
 
 	parser.add_argument(
-		'-s', '--show_pdf', action='store_true',
+		'-s', '--show_pdf_xdg', action='store_true',
 		help="Show the PDF after rendering. Uses xdg-open."
+		)
+
+	parser.add_argument(
+		'-c', '--show_pdf_chrome', action='store_true',
+		help="Show the PDF after rendering using Google Chrome."
 		)
 
 	parser.add_argument(
@@ -138,7 +143,7 @@ def main():
 		print(tex_proc.stdout, end='')
 		print(tex_proc.stderr, end='')
 
-	if args.show_pdf:
+	if args.show_pdf_xdg:
 		# Open the PDF with nohupped XDG
 		xdg_proc = subprocess.run(['nohup', 'xdg-open', 
 			os.path.join(md_dir, md_filename + '.pdf')],
@@ -148,6 +153,17 @@ def main():
 
 		# print(xdg_proc.stdout, end='')
 		# print(xdg_proc.stderr, end='')
+
+	if args.show_pdf_chrome:
+		chrome_proc = subprocess.run(['google-chrome', 
+			os.path.join(md_dir, md_filename + '.pdf')],
+			stdout=subprocess.PIPE,
+			stderr=subprocess.PIPE,
+			universal_newlines=True)		
+
+		# print(chrome_proc.stdout, end='')
+		# print(chrome_proc.stderr, end='')
+
 
 if __name__ == '__main__':
 	main()
