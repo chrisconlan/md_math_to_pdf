@@ -71,8 +71,6 @@ I really liked the way that RStudio and Yihui Xie implemented Pandoc. It kicksta
 
 ## To-Do List
 
-+ Add support for other OS's PDF openers. Currently using `xdg-open` to support my RHEL machine.
-
 + Add more cool arguments to Pandoc call. This is all that is required to make Pandoc produce the coolest Markdown flavor ever:
 
 ```
@@ -85,5 +83,11 @@ I really liked the way that RStudio and Yihui Xie implemented Pandoc. It kicksta
 + Understand and add PDF templates. The ones in the `templates/latex` folder are taken from RStudio's installation directory, and work pretty well.
 
 + Add arguments to the command line utility, without overly duplicating Pandocs arguments.
+
+## New Features
+
++ Can now use `--show_pdf_chrome` or `-c` to display the PDF in Google Chrome after rendering. This relies on `google-chrome` being callable from the command line.
+
++ For displaying the PDF with `xdg-open`, argument has been changed from `--show_pdf` to `--show_pdf_xdg`. I anticipate `--show_pdf_chrome` will be the more popular flag.
 
 
