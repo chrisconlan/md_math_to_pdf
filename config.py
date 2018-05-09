@@ -12,7 +12,7 @@ default_latex_template = os.path.join(module_dir, 'templates', 'latex',
 """
 Either the bash command for pandoc, or path to pandoc binary
 """
-pandoc_path = 'pandoc2'
+pandoc_path = 'pandoc'
 
 
 """
@@ -25,7 +25,7 @@ Examples:
 pdf_engine_args = ('--latex-engine', 'pdflatex')
 pdf_engine_args = ('--pdf-engine', 'xelatex')
 """
-pdf_engine_args = ('--pdf-engine', 'pdflatex')
+pdf_engine_args = ('--latex-engine', 'pdflatex')
 
 
 """
