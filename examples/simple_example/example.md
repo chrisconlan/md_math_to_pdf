@@ -25,7 +25,6 @@ Some text...
 
 **`bold monoscript`**
 
-
 ```python
 # Python highlighted syntax
 import numpy as np
@@ -34,10 +33,6 @@ print(np.arange(1,10) * 3)
 """
 Some nice python docstrings
 """
-```
-
-```
-## [ 3  6  9 12 15 18 21 24 27]
 ```
 
 A regression...
@@ -49,7 +44,6 @@ $$
 Now some $\alpha$ inline $\beta$ math $\gamma$ with $\delta$ lot $\eta$ of $\zeta$ Greek.
 
 ![Jazz Dog](./jazz_dog.jpeg)
-
 
 
 
