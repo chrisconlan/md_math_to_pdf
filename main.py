@@ -4,12 +4,11 @@ import argparse
 
 import subprocess
 
-program_name = 'math_md_to_pdf'
-version = '0.1.1'
+from .config import *
+from .utils import subprocess_exec
 
-module_dir = os.path.dirname(os.path.abspath(__file__))
-default_latex_template = os.path.join(module_dir, 'templates', 'latex',
-	'default-1.17.0.2.tex')
+program_name = 'md_math_to_pdf'
+version = '0.1.2'
 
 def main():
 
@@ -25,7 +24,6 @@ def main():
 		formatter_class=lambda prog:
 			argparse.ArgumentDefaultsHelpFormatter(prog, max_help_position=20))	
 
-
 	parser.add_argument(
 		'mdfile', metavar='mdfile', type=str,
 		help="""
@@ -39,7 +37,7 @@ def main():
 		""")
 
 	parser.add_argument(
-		'-l', '--keep_latex', action='store_true',
+		'-l', '--keep-latex', action='store_true',
 		help="Keep LaTeX files used to generated PDF.")
 
 	parser.add_argument(
@@ -48,12 +46,12 @@ def main():
 		)
 
 	parser.add_argument(
-		'-s', '--show_pdf_xdg', action='store_true',
+		'-x', '--show-pdf-xdg', action='store_true',
 		help="Show the PDF after rendering. Uses xdg-open."
 		)
 
 	parser.add_argument(
-		'-c', '--show_pdf_chrome', action='store_true',
+		'-c', '--show-pdf-chrome', action='store_true',
 		help="Show the PDF after rendering using Google Chrome."
 		)
 
@@ -78,91 +76,58 @@ def main():
 
 	# Execute and interleave the code if you want, using knitr
 	if args.knit:
-		knit_proc = subprocess.run([
-		'Rscript', '-e', 
-		"\"library(knitr); setwd('{:s}'); knit('{:s}', output='{:s}')\"".format(
-			md_dir, 
-			md_filename + '.md',
-			md_filename + '.utf8.md'
+		r_code_on_the_fly = \
+			'library(knitr); setwd("{:s}"); knit("{:s}", output="{:s}")'.format(
+				md_dir, 
+				md_filename + '.md',
+				md_filename + '.knit.md'
 			)
-		],
-		stdout=subprocess.PIPE,
-		stderr=subprocess.PIPE,
-		universal_newlines=True)
 
-		print(knit_proc.stdout, end='')
-		print(knit_proc.stderr, end='')
+		subprocess_exec(['Rscript', '-e', r_code_on_the_fly],
+			verbose=args.verbose)
 
-		# Knitted, change intermediate markdown path
+		# If knitted, change intermediate markdown path
 		md_intermediate_filepath = \
-			os.path.join(md_dir, md_filename + '.utf8.md')
+			os.path.join(md_dir, md_filename + '.knit.md')
+
+	pandoc_args = [pandoc_path,
+		*memory_usage_args,
+		md_intermediate_filepath,
+		*output_args,
+		*input_args,
+		'--template', latex_template_path,
+		*highlight_args,
+		*pdf_engine_args,
+		*geometry_args,
+		*extra_args,
+	]
+	pdf_outpath = os.path.join(md_dir, md_filename + '.pdf')
+	tex_outpath = os.path.join(md_dir, md_filename + '.tex')
 
 	# Render the PDF from the Markdown
-	pdf_proc = subprocess.run(['pandoc',
-		'+RTS', '-K512m', '-RTS', 
-		md_intermediate_filepath,
-		'--to', 'latex',
-		'--from', 'markdown+' + \
-					'autolink_bare_uris+' + \
-					'ascii_identifiers+' + \
-					'tex_math_single_backslash',
-		'--output', os.path.join(md_dir, md_filename + '.pdf'),
-		'--template', latex_template_path,
-		'--highlight-style', 'tango',
-		'--latex-engine', 'pdflatex',
-		'--variable', 'graphics=yes',
-		],
-		stdout=subprocess.PIPE,
-		stderr=subprocess.PIPE,
-		universal_newlines=True)
+	subprocess_exec(pandoc_args + ['--output', pdf_outpath],
+		verbose=args.verbose)
 
-	print(pdf_proc.stdout, end='')
-	print(pdf_proc.stderr, end='')
-
-	# Render the latex that generated the PDF (kind of redundant, but necessary)
+	# Render the latex that generated the PDF (redundant, but necessary)
 	if args.keep_latex:
-
-		tex_proc = subprocess.run(['pandoc',
-			'+RTS', '-K512m', '-RTS', 
-			md_intermediate_filepath,
-			'--to', 'latex',
-			'--from', 'markdown+' + \
-						'autolink_bare_uris+' + \
-						'ascii_identifiers+' + \
-						'tex_math_single_backslash',
-			'--output', os.path.join(md_dir, md_filename + '.tex'),
-			'--template', latex_template,
-			'--highlight-style', 'tango',
-			'--latex-engine', 'pdflatex',
-			'--variable', 'graphics=yes',
-			],
-			stdout=subprocess.PIPE,
-			stderr=subprocess.PIPE,
-			universal_newlines=True)
-
-		print(tex_proc.stdout, end='')
-		print(tex_proc.stderr, end='')
+		subprocess_exec(pandoc_args + ['--output', tex_outpath],
+			verbose=args.verbose)
 
 	if args.show_pdf_xdg:
 		# Open the PDF with nohupped XDG
-		xdg_proc = subprocess.run(['nohup', 'xdg-open', 
-			os.path.join(md_dir, md_filename + '.pdf')],
-			stdout=subprocess.PIPE,
-			stderr=subprocess.PIPE,
-			universal_newlines=True)
-
-		# print(xdg_proc.stdout, end='')
-		# print(xdg_proc.stderr, end='')
+		subprocess_exec([
+			'nohup', 'xdg-open', 
+			os.path.join(md_dir, md_filename + '.pdf')
+			],
+			verbose=False)
 
 	if args.show_pdf_chrome:
-		chrome_proc = subprocess.run(['google-chrome', 
-			os.path.join(md_dir, md_filename + '.pdf')],
-			stdout=subprocess.PIPE,
-			stderr=subprocess.PIPE,
-			universal_newlines=True)		
-
-		# print(chrome_proc.stdout, end='')
-		# print(chrome_proc.stderr, end='')
+		# Open the PDF with Chrome
+		subprocess_exec([
+			'google-chrome', 
+			os.path.join(md_dir, md_filename + '.pdf')
+			],
+			verbose=False)
 
 
 if __name__ == '__main__':

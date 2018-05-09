@@ -25,7 +25,8 @@ Some text...
 
 **`bold monoscript`**
 
-```{python}
+
+```python
 # Python highlighted syntax
 import numpy as np
 print(np.arange(1,10) * 3)
@@ -33,6 +34,10 @@ print(np.arange(1,10) * 3)
 """
 Some nice python docstrings
 """
+```
+
+```
+## [ 3  6  9 12 15 18 21 24 27]
 ```
 
 A regression...
