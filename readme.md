@@ -37,15 +37,27 @@ import math_md_to_pdf
 math_md_to_pdf.main()
 ```
 
+## Arguments
+
++ `--show-pdf-chrome` or `-c` to display the PDF in Google Chrome after rendering. This relies on `google-chrome` being callable from the command line.
+
++ `--show-pdf-xdg` or `-x` to display the PDF with `xdg-open`.
+
++ `--template` or `-t` to pass a different LaTeX template to Pandoc. The default template can be changed in `config.py`.
+
++ `--knit` or `-k` to pass Markdown through RMarkdown's knitr first. Requires R, RMarkdown, and Knitr, as well as `Rscript` callable from command line.
+
 ## Dependencies
 
 + Python 3.5 or later for `subprocess.run()` and `print` functions.
 
-+ Pandoc 1.12 for Markdown rendering. v1.12 required for YAML headers.
++ Pandoc 1.12 for Markdown rendering. v1.12+ required for YAML headers. Pandoc 1.12 through 2.2 supported.
 
-+ R with Knitr and RMarkdown if you want to execute code. This is controlled by an optional argument.
++ R with Knitr and RMarkdown if you want to execute code. This is controlled by an optional argument. R and its dependencies aren't required if you don't use the corresponding arguments.
 
-+ Currently uses `nohup` and `xdg-open` to open PDF's after rendering. This is also controlled by an optional argument.
++ Optionally `nohup` and `xdg-open` to open PDF's after rendering. Controlled by an optional argument.
+
++ Optionally `google-chrome` terminal command for displaying PDF's after rendering. Controlled by an optional argument.
 
 ## Background
 
@@ -71,23 +83,10 @@ I really liked the way that RStudio and Yihui Xie implemented Pandoc. It kicksta
 
 ## To-Do List
 
-+ Add more cool arguments to Pandoc call. This is all that is required to make Pandoc produce the coolest Markdown flavor ever:
-
-```
---to latex --from markdown+\
-	autolink_bare_uris+\
-	ascii_identifiers+\
-	tex_math_single_backslash
-```
++ ~~Add more cool arguments to Pandoc call.~~
 
 + Understand and add PDF templates. The ones in the `templates/latex` folder are taken from RStudio's installation directory, and work pretty well.
 
-+ Add arguments to the command line utility, without overly duplicating Pandocs arguments.
++ Fail more explicitly.
 
-## New Features
-
-+ Can now use `--show_pdf_chrome` or `-c` to display the PDF in Google Chrome after rendering. This relies on `google-chrome` being callable from the command line.
-
-+ For displaying the PDF with `xdg-open`, argument has been changed from `--show_pdf` to `--show_pdf_xdg`. I anticipate `--show_pdf_chrome` will be the more popular flag.
-
-
++ ~~Add arguments to the command line utility, without overly duplicating Pandoc's arguments.~~

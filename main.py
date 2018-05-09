@@ -55,9 +55,9 @@ def main():
 		help="Show the PDF after rendering using Google Chrome."
 		)
 
-	parser.add_argument(
-		'-v', '--verbose', action='store_true',
-		help="Display verbose output messages.")
+	# parser.add_argument(
+	# 	'-v', '--verbose', action='store_true',
+	# 	help="Display verbose output messages.")
 
 	args = parser.parse_args()
 
@@ -83,8 +83,7 @@ def main():
 				md_filename + '.knit.md'
 			)
 
-		subprocess_exec(['Rscript', '-e', r_code_on_the_fly],
-			verbose=args.verbose)
+		subprocess_exec(['Rscript', '-e', r_code_on_the_fly])
 
 		# If knitted, change intermediate markdown path
 		md_intermediate_filepath = \
@@ -105,13 +104,11 @@ def main():
 	tex_outpath = os.path.join(md_dir, md_filename + '.tex')
 
 	# Render the PDF from the Markdown
-	subprocess_exec(pandoc_args + ['--output', pdf_outpath],
-		verbose=args.verbose)
+	subprocess_exec(pandoc_args + ['--output', pdf_outpath])
 
 	# Render the latex that generated the PDF (redundant, but necessary)
 	if args.keep_latex:
-		subprocess_exec(pandoc_args + ['--output', tex_outpath],
-			verbose=args.verbose)
+		subprocess_exec(pandoc_args + ['--output', tex_outpath])
 
 	if args.show_pdf_xdg:
 		# Open the PDF with nohupped XDG
