@@ -53,7 +53,7 @@ math_md_to_pdf.main()
 
 + Pandoc 1.12 for Markdown rendering. v1.12+ required for YAML headers. Pandoc 1.12 through 2.2 supported.
 
-+ R with Knitr and RMarkdown if you want to execute code. This is controlled by an optional argument. R and its dependencies aren't required if you don't use the corresponding arguments.
++ Optionally R with Knitr and RMarkdown if you want to execute code.
 
 + Optionally `nohup` and `xdg-open` to open PDF's after rendering. Controlled by an optional argument.
 
