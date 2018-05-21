@@ -215,11 +215,12 @@ $endif$
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 
 
-$if(numbersections)$
-    \setcounter{secnumdepth}{5}
-$else$
-    \setcounter{secnumdepth}{0}
-$endif$
+% $if(numbersections)$
+%     \setcounter{secnumdepth}{5}
+% $else$
+%     \setcounter{secnumdepth}{0}
+% $endif$
+\input{utils/numbersections.tex}
 
 
 $if(verbatim-in-note)$

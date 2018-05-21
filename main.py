@@ -41,6 +41,10 @@ def main():
 		help="Keep LaTeX files used to generated PDF.")
 
 	parser.add_argument(
+		'-lo', '--latex-only', action='store_true',
+		help="Don't generate PDF, just LaTeX.")
+
+	parser.add_argument(
 		'-k', '--knit', action='store_true',
 		help="Pass through RMarkdown's knitr first."
 		)
@@ -71,6 +75,7 @@ def main():
 
 	md_intermediate_filepath = os.path.join(md_dir, md_filename + '.md')
 	latex_template_path = os.path.abspath(args.template)
+	latex_template_dir = os.path.dirname(latex_template_path)
 
 	os.chdir(md_dir)
 
@@ -89,6 +94,11 @@ def main():
 		md_intermediate_filepath = \
 			os.path.join(md_dir, md_filename + '.knit.md')
 
+
+	resource_path_args = ('--resource-path', 
+		':'.join((latex_template_dir, md_dir)))
+
+	# Args to pass to pandoc procedure(s)
 	pandoc_args = [pandoc_path,
 		*memory_usage_args,
 		md_intermediate_filepath,
@@ -98,16 +108,18 @@ def main():
 		*highlight_args,
 		*pdf_engine_args,
 		*geometry_args,
+		*resource_path_args,
 		*extra_args,
 	]
 	pdf_outpath = os.path.join(md_dir, md_filename + '.pdf')
 	tex_outpath = os.path.join(md_dir, md_filename + '.tex')
 
 	# Render the PDF from the Markdown
-	subprocess_exec(pandoc_args + ['--output', pdf_outpath])
+	if not args.latex_only:
+		subprocess_exec(pandoc_args + ['--output', pdf_outpath])
 
 	# Render the latex that generated the PDF (redundant, but necessary)
-	if args.keep_latex:
+	if args.keep_latex or args.latex_only:
 		subprocess_exec(pandoc_args + ['--output', tex_outpath])
 
 	if args.show_pdf_xdg:

@@ -24,8 +24,9 @@ The latex-to-pdf renderer used by Pandoc, and the argument used to denote it.
 Examples:
 pdf_engine_args = ('--latex-engine', 'pdflatex')
 pdf_engine_args = ('--pdf-engine', 'xelatex')
+pdf_engine_args = ('--pdf-engine', 'luatex')
 """
-pdf_engine_args = ('--pdf-engine', 'pdflatex')
+pdf_engine_args = ('--pdf-engine', 'xelatex')
 
 
 """
@@ -134,6 +135,7 @@ Examples:
 -V geometry:"left=3cm, width=10cm"
 """
 geometry_args = ('-V', 'geometry:margin=1in')
+# geometry_args = ()
 
 
 """

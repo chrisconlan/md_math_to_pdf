@@ -10,6 +10,7 @@ toc: true
 toc_depth: 2
 lof: true
 lot: true
+numbersections: true
 ---
 
 
@@ -68,7 +69,7 @@ $$
 
 Now some $\alpha$ inline $\beta$ math $\gamma$ with $\delta$ lot $\eta$ of $\zeta$ Greek.
 
-![Jazz Dog](./jazz_dog.jpeg)
+![Jazz Dog](jazz_dog.jpeg)
 
 -------------------------------------------------------------
  Centered   Default           Right Left
